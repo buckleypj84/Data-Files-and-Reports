@@ -1,0 +1,89 @@
+#In this activity, you will generate a universally unique id (UUID) 
+string using functions and module imports.
+#See link for more info on UUIDs.
+#Import the random and string modules.
+
+#Create a function that returns a universally unique id (UUID).
+
+
+#The function should accept a parameter for uuid length with the default size of 4.
+#The function should accept a parameter for a string of characters.
+#This string of characters will be the alphabet used to generate the uuid.
+#For example, if we pass 'abcdef', the uuid can only consist of the letters 'abcdef'.
+#The length and characters parameters should be optional and have default values.
+#Define a default character alphabet using the constants provided by the string module.
+#To select random characters for your uuid, use one of the functions available for sequence
+selection in the random module to randomly select a character from the alphabet.
+
+#Complete the test function to generate a variety of UUIDs and print them to the console.
+#Hints
+#Define a default character alphabet that combines ascii letters with digits.
+#The random module has a function for making a random choice from an array. See the documentation on functions for sequences.
+#The code for the uuid function should create a list, append length random characters to the list, and then return the result of using join to create a string from it.
+
+# -*- coding: UTF-8 -*-
+"""UUID Generator.
+
+This module allows us to generate a universally unique identifier (UUID)
+with a custom length and character set.
+
+Example:
+    $ python uuid.py
+
+"""
+
+# Use import to access code from other modules.
+import string
+import random
+
+
+# Use default parameters in our function declaration to allow us to change the length and characters
+def generate_uuid(length=4, characters=string.ascii_letters + string.digits):
+    """Generate a string of random characters.
+
+    Args:
+        length (int, optional): The length of the UUID to generate.
+        characters (string, optional): The character set used to build the UUID.
+
+    Returns:
+        string: A string representation of the generated UUID.
+    """
+    # Loop through a range defined by the length size
+    # In each loop, make a random choice from our characters and append that to the uuid list
+    uuid = []
+    for _ in range(length):
+        uuid.append(random.choice(characters))
+    # Use join to convert the uuid list to a string
+    return ''.join(uuid)
+
+
+def test():
+    """Run test code."""
+
+    # Generate a uuid using default values
+    uuid = generate_uuid()
+    print("UUID using default values: {}".format(uuid))
+
+    # Generate a uuid of length 16 using the default character set
+    uuid16 = generate_uuid(length=16)
+    print("UUID of length 16: {}".format(uuid16))
+
+    # Generate a uuid of random numbers using the default length
+    uuid_random_numbers = generate_uuid(characters=string.digits)
+    print("UUID of only numbers: {}".format(uuid_random_numbers))
+
+    # Generate a uuid consisting of only letters
+    uuid_random_letters = generate_uuid(characters=string.ascii_letters)
+    print("UUID of only letters: {}".format(uuid_random_letters))
+
+    # Generate a uuid of length 8 that includes punctuation in the character set
+    uuid_with_punctuation = generate_uuid(
+        length=8,
+        characters=string.ascii_letters + string.digits + string.punctuation)
+    print("UUID with punctuation: {}".format(uuid_with_punctuation))
+
+
+# This conditional will execute the test function when running as a script.
+# https://docs.python.org/3/library/__main__.html
+if __name__ == '__main__':
+    test()
