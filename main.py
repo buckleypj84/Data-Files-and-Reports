@@ -1,118 +1,132 @@
 # --------------------------------------------------------------------------------------------
 # Date:     6/19/2019
 # Pgm Name: main.py   
-# Input:    (PyBank/Resources/budget_# data.csv). 
-# Desc:     Python script that analyzes the financail records to calculate each of the following:
-#           * total number of months included in the dataset
-#           * net total amount of "Profit/Losses" over the entire period
-#           * average of the changes in "Profit/Losses" over the entire period
-#           * greatest increase in profits (date and amount) over the entire period
-#           * greatest decrease in losses (date and amount) over the entire period:
+# Input:    (PyPoll/Resources/election_data.csv). 
+# Desc:     Python script analyzes votes and calculates each of the following:
+#           * The total number of votes cast
+#           * A complete list of candidates who received votes
+#           * The percentage of votes each candidate won
+#           * The total number of votes each candidate won
+#           * The winner of the election based on popular vote.
 # Sample Output: (print the analysis to the terminal and export a text file with the results)
-#   #   Financial Analysis
-#   ----------------------------
-#   Total Months: 86
-#   Total: $38382578
-#   Average  Change: $-2315.12 -- verify this amt
-#   Greatest Increase in Profits: Feb-2012 ($1926159)
-#   Greatest Decrease in Profits: Sep-2013 ($-2196167)  
-#------------------------------------------------------------------------------- 
+#   Election Results
+#   -------------------------
+#   Total Votes: 3521001     
+#   -------------------------
+#   Khan: 63.000% (2218231)     
+#   Correy: 20.000% (704200)        
+#   Li: 14.000% (492940)            
+#   O'Tooley: 3.000% (105630)
+#   -------------------------
+#   Winner: Khan               
+#   -------------------------`
+#-------------------------------------------------------------------------------
 import os
 import csv
-
+import pandas as pd
 #get the current working directory
-currentDir = os.getcwd()
-#print(currentDir)
-#csvpath = os.path.join('..', 'Resources', 'budget_data.csv')
-#os.chdir(""../Homework")
-csvpath = os.path.join('..','..', 'Homework', 'budget_data.csv')
-print(csvpath)
+# currentDir = os.getcwd()
+# print(currentDir)
+#csvpath = os.path.join('..', 'Resources', 'election_data.csv')
+csvpath = os.path.join('..','..', 'Homework', 'election_data.csv')
 with open(csvpath, newline="") as csvfile:
     csvreader = csv.reader(csvfile, delimiter=",")
 
-    #-----------------------------------------------------------------------------
     # Read the header row first (skip this part if there is no header)
     # Initialize variables
-    #-----------------------------------------------------------------------------
     next(csvreader, None)
-    total_months = 0
-    total_profit_loss = 0
-    pf_loss_change = 0
 
-    min_change = 0
-    max_change = 0
-    x = 0
+    candidate_vote_khan = 0
+    candidate_vote_correy = 0
+    candidate_vote_li = 0
+    candidate_vote_otooley = 0
+    total_votes = 0
 
-    profit_loss_change = []
-    month_yr = []
-    budget = []
-    rowcnt = 0
- 
-    #-----------------------------------------------------------------------------
-    # Read through each row of data budget and month_yr lists
-    # cast qty in budget as float to prevent errors in calculations
-    #-----------------------------------------------------------------------------
+    votes = []
+    #--------------------------------------------------------------------
+    # Read through each row of data and load votes[]
+    # place number of votes for each candidate in variable
+    #--------------------------------------------------------------------
     for row in csvreader:
-        budget.append(float(row[1]))
-        month_yr.append(row[0])
+        votes.append(row[2])             
+        if row[2] == "Khan":
+            name_khan  = "Khan"
+            candidate_vote_khan +=  1
+        elif row[2] == "Correy":
+            name_correy = "Correy"
+            candidate_vote_correy += 1
+        elif row[2] == "Li":
+            name_li = "Li"
+            candidate_vote_li +=  1
+        else:
+            name_otooley = "OTooley"
+            candidate_vote_otooley +=  1
+        
+    #--------------------------------------------------------------------
+    # total number of votes cast
+    #--------------------------------------------------------------------
+    total_votes = len(votes) 
 
-    #-----------------------------------------------------------------------------
-    # Read through each row of data 
-    #   begin reading at row 2 == subtract the qty in row 1 from qty in row 2
-    #   len(month_yr) == returns nbr of items in the list
-    #   load list with profit loss changes
-    #-----------------------------------------------------------------------------
-    for rowcnt in range(1,len(budget)):                          
-        total_months = len(month_yr)
-        pf_loss_change = float(budget[rowcnt]) - float(budget[rowcnt-1] )
-        profit_loss_change.append(pf_loss_change)
+    #--------------------------------------------------------------------
+    # calculate the percentage of votes for each candidate
+    #--------------------------------------------------------------------
+    khan_pct = (candidate_vote_khan / total_votes) * 100
+    correy_pct = (candidate_vote_correy / total_votes) * 100
+    li_pct = (candidate_vote_li / total_votes) * 100
+    otooley_pct = (candidate_vote_otooley / total_votes) * 100  
 
-    #----------------------------------------------------------------------------
-    # Summarize and format budget data as currency with 2 decimals
-    #----------------------------------------------------------------------------
-    p_total_profit_loss = sum(budget)
-    total_profit_loss = sum(budget)
-    total_profit_loss = ('$'+ format(total_profit_loss,',.2f')) 
+    #--------------------------------------------------------------------
+    # format the percentages
+    #--------------------------------------------------------------------
+    khan_pct = "{:1.2f}".format(khan_pct) + "%"
+    correy_pct = "{:1.2f}".format(correy_pct) + "%"
+    li_pct = "{:1.2f}".format(li_pct) + "%"
+    otooley_pct = "{:1.2f}".format(otooley_pct) + "%"
 
-    p_max_change = max(profit_loss_change)
-    max_change = max(profit_loss_change)
-    max_change = ('$'+ format(max_change,',.2f'))
+    #--------------------------------------------------------------------
+    # calculate the percentage of votes for each candidate
+    #--------------------------------------------------------------------
+    candidate_dicts = [{"CANDIDATE":name_khan,"VOTES":candidate_vote_khan},
+                       {"CANDIDATE":name_correy,"VOTES":candidate_vote_correy},
+                       {"CANDIDATE":name_li,"VOTES":candidate_vote_li},
+                       {"CANDIDATE":name_otooley,"VOTES":candidate_vote_otooley},]
 
-    p_min_change = min(profit_loss_change)
-    min_change = min(profit_loss_change)
-    min_change = ('$'+ format(min_change,',.2f'))
+    df_candidates = pd.DataFrame(candidate_dicts)
+ 
+    #count_votes = df_candidates["VOTES"].max()
+    #--------------------------------------------------------------------
+    # sort the DataFrame in descending to retrieve the largest 
+    # number of votes cast for a candidate
+    #  retrieve the name of the winning candidate using iloc
+    #--------------------------------------------------------------------    
+    sort_df = df_candidates.sort_values(["VOTES"])
+    
+    sort_df = sort_df.reset_index(drop=True)
 
-    #----------------------------------------------------------------------------
-    # Retrieve the maximum/minimum profit lost change and the corresponding month and yr
-    # on the month_yr list
-    #----------------------------------------------------------------------------
-    max_change_date = str(month_yr[profit_loss_change.index(max(profit_loss_change))])
+    winner = sort_df.iloc[3, 0]
+ 
+    #--------------------------------------------------------------------
+    # Print the results to the terminal and write to a file
+    #--------------------------------------------------------------------
 
-    min_change_date = [profit_loss_change.index(min(profit_loss_change))]
-
-    min_change_date = str(month_yr[profit_loss_change.index(min(profit_loss_change))])
-
-    #----------------------------------------------------------------------------
-    # Calculate and format average budget change
-    #----------------------------------------------------------------------------
-    p_average_change = sum(profit_loss_change)/total_months 
-    average_change = sum(profit_loss_change)/total_months 
-    average_change = ('$'+ format(average_change,',.2f'))
-
-    #----------------------------------------------------------------------------
-    # Display data on the terminal and write data to a file
-    #----------------------------------------------------------------------------
-    print("Financial Analysis")
+    print("Election Results")
     print("----------------------------------------")
-    message="Total Months: {}\nTotal Profit Loss: {}\nAverage Change: {}\n" \
-             "Greatest Increase in Projects: {} {}\nGreatest Decrease in Projects: {} {}"
-    print(message.format(total_months,total_profit_loss,average_change,max_change_date,max_change,min_change_date, min_change))
+   
+    message="Total Votes: {}\n\nKhan:        {}   {}\nCorrey:      {}   {}\n" \
+             "Li:          {}   {}\nO'Tooley:     {}   {}\n"    
+    print(message.format(total_votes, khan_pct,candidate_vote_khan,correy_pct,candidate_vote_correy,li_pct,candidate_vote_li,otooley_pct,candidate_vote_otooley))
 
-    budget_file = open('budget_update.csv', 'w', newline='')
-    budget_file.write("Financial Analysis" + "\n")
-    budget_file.write("----------------------------------------" + "\n")
-    budget_file.write(f"Total Months: {total_months}" + "\n")
-    budget_file.write(f"Total Profit Loss: $ {p_total_profit_loss}" + " \n")
-    budget_file.write(f"Average Revenue Change: ${p_average_change}" + "\n")
-    budget_file.write(f"Greatest Increase in Revenue: {max_change_date} (${p_max_change})" + "\n")
-    budget_file.write(f"Greatest Decrease in Revenue: {min_change_date} (${p_min_change})" + "\n") 
+    print("----------------------------------------")
+
+    print(        "W I N N E R   "  + winner)
+
+    vote_file = open('new_election_data.txt', 'w', newline='')
+    vote_file.write("Election Results " +  "\n") 
+    vote_file.write(f"----------------------------------------" + "\n")
+    vote_file.write(f"Total Votes:{total_votes}" + "\n")
+    vote_file.write(f"Khan: {khan_pct} {candidate_vote_khan}" +  "\n")
+    vote_file.write(f"Correy: {correy_pct} {candidate_vote_correy}"  + "\n")
+    vote_file.write(f"Li:{li_pct}  {candidate_vote_li}" + "\n")
+    vote_file.write(f"O'Tooley:  {otooley_pct} {candidate_vote_otooley}" +  "\n") 
+    vote_file.write(f"----------------------------------------" + "\n")
+    vote_file.write(f"W I N N E R     {winner}")
