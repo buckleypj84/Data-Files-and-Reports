@@ -146,7 +146,6 @@ def tempst(start):
 
     temp_start = session.query(*sel).filter(Measurement.date >= start).all()
     
-    #return jsonify(f'Here are the mininum temp, average temp, and maximum temp, respectively, for Hawaii from {start} to 2017-08-23:', trip)
     return jsonify(f'mininum temp, average temp, maximum temp: {start} to end date (2017-08-23)', temp_start)
     
 #=======================================================================
