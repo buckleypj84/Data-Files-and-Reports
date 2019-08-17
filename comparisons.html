@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Weather analysis</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+      <nav class=" navbar navbar-expand-lg navbar-light bg-light" >
+        <div class="container-fluid">
+          <a class="navbar-brand" href="index.html" ><Strong>Latitude</Strong></a>
+        
+          <div class="navbar-nav navbar-right">
+            <ul  class="navbar-nav" ></ul>
+                
+              <li class="nav-item dropdown active" >
+                <a class="nav-link dropdown-toggle" href="plots.html" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Plots</a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="max_temperature.html">Max Temperature</a>
+                    <a class="dropdown-item" href="humidity.html">Humidity</a>
+                    <a class="dropdown-item" href="cloudiness.html">Cloudiness</a>
+                    <a class="dropdown-item" href="wind_speed.html">Wind Speed</a>
+                  </div>
+              </li>
+                
+              <li class="nav-item active">
+                <a class="nav-link" href="comparison.html">Comparison</a>
+              </li>
+                
+              <li class="nav-item active">
+                <a class="nav-link" href="data.html">Data</a>
+              </li>
+
+            </ul>
+          </div> <!--navbar-nav navbar-right-->
+        </div> <!--container-fluid-->
+      </nav>
+
+
+    <div class='container' id="comparison">
+      <div class="row" >
+        <div class="col-sm-12 col-md-12">    
+          <h2>Comparison:Latitude vs. X</h2>
+          <hr>
+          <p>Click on any plot to get an in-depth analysis.</p>
+
+          <div class="row" id="comparison-first-row">
+            <div class="col-sm-12 col-md-6 ">
+              <h3> Latitude vs. Max Temperture</h3>
+              <a href="max_temperature.html"> <img src = "Fig1.png" width="500" height="350"></a>
+            </div>
+            <div class="col-sm-12 col-md-6 ">
+              <h3>Latitude vs. Humidity</h3>
+              <a href="humidity.html"> <img src = "Fig2.png"width="500" height="350"></a>
+            </div> 
+          </div>
+
+
+          <div class="row" id="comparison-second-row">
+            <div class="col-sm-12 col-md-6"> 
+              <h3>Latitude vs. Cloudiness</h3>
+              <a href="cloudiness.html"> <img src = "Fig3.png"width="500" height="350"></a>
+            </div>
+            <div class="col-sm-12 col-md-6"> 
+              <h3>Latitude vs. Wind Speed</h3>
+                <a href="wind_speed.html"> <img src = "Fig4.png"width="500" height="350"></a>  
+            </div>
+          </div>
+
+        </div> <!--col-sm-12 col-md-12 div-->
+      </div> <!--row div-->
+    </div> <!--container div-->
+
+  </body>
+</html>
